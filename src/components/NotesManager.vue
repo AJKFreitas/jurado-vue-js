@@ -1,38 +1,34 @@
 <template>
   <div class="container-fluid mt-4">
   <h1>Notas</h1>
+  <div>
+    
+
+    <b-modal
+      id="modal-prevent-closing"
+      ref="modal"
+      title="Submit Your Name"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk">
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          :state="nameState"
+          label="Name"
+          label-for="name-input"
+          invalid-feedback="Name is required"
+        >
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>
+  </div>
     <b-container>
-        <div>
-            <b-modal id="modal-1">
-              <div class="d-block">Hello From My Modal!</div>
-              <b-card :title="(model.id ? 'Editar Música ID#' + model.id : 'Nova Música')">
-              <form @submit.prevent="saveMusic">
-                <b-row>
-                  <b-col>
-                    <b-form-group label="Nome">
-                      <b-form-input v-model="model.nome" type="text"></b-form-input>
-                    </b-form-group>
-                  </b-col>
-                  <b-col>
-                    <b-form-group label="Autor">
-                      <b-form-input v-model="model.autor" type="text"></b-form-input>
-                    </b-form-group>
-                  </b-col>
-                  <b-col>
-                    <b-form-group label="Nota Final">
-                      <b-form-input v-model="model.notaTotal" type="text"></b-form-input>
-                    </b-form-group>
-                    </b-col>
-                    <b-col>
-                    <b-form-group label="&nbsp;">
-                      <b-btn type="submit" variant="success">Salvar</b-btn>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-              </form>
-        </b-card>
-            </b-modal>
-        </div>
           <table class="table table-striped">
             <thead>
               <tr>
@@ -48,13 +44,14 @@
                 <td>{{ music.autor }}</td>
                 <td>{{ music.notaTotal }}</td>
                 <td class="text-right">
-                  <b-button @click="showModal" @click.prevent="populateMusicToEdit(music)" ref="btnShow">Pontuar</b-button>
+                  <b-button v-b-modal.modal-prevent-closing @click.prevent="populateMusicToEdit(music)">Pontuar</b-button>
                   <!-- <b-button variant="warning" @click.prevent="populateMusicToEdit(music)">Editar</b-button>
                   <b-button variant="danger" @click.prevent="deleteMusic(music.id)">Deletar</b-button> -->
                 </td>
               </tr>
             </tbody>
           </table>
+
     </b-container>
   </div>
 </template>
@@ -66,21 +63,40 @@ export default {
       loading: false,
       nota: [],
       musics: [],
-      model: {}
+      model: {},
+      name: '',
+      nameState: null,
+      submittedNames: []
     }
   },
   async created () {
     this.refreshMusics()
   },
   methods: {
-    showModal () {
-      this.$root.$emit('bv::show::modal', 'modal-1', '#btnShow')
+    checkFormValidity () {
+      const valid = this.$refs.form.checkValidity()
+      this.nameState = valid ? 'valid' : 'invalid'
+      return valid
     },
-    hideModal () {
-      this.$root.$emit('bv::hide::modal', 'modal-1', '#btnShow')
+    resetModal () {
+      this.name = ''
+      this.nameState = null
     },
-    toggleModal () {
-      this.$root.$emit('bv::toggle::modal', 'modal-1', '#btnToggle')
+    handleOk (bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit () {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return
+      }
+      this.saveMusic()
+      this.$nextTick(() => {
+        this.$refs.modal.hide()
+      })
     },
     async refreshMusics () {
       this.loading = true
