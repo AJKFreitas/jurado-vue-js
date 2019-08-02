@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid mt-4">
-    <h1>Musicas</h1>
+    <h1>Música</h1>
     <div>
       <b-container>
-        <b-card :title="(model.id ? 'Editar Musica ID#' + model.id : 'Nova Musicas')">
+        <b-card :title="(model.id ? 'Editar Música ID#' + model.id : 'Nova Música')">
         <form @submit.prevent="saveMusic">
           <b-row>
             <b-col>
@@ -20,9 +20,11 @@
               <b-form-group label="Nota Final">
                 <b-form-input v-model="model.notaTotal" type="text"></b-form-input>
               </b-form-group>
-              <div>
+              </b-col>
+              <b-col>
+              <b-form-group label="&nbsp;">
                 <b-btn type="submit" variant="success">Salvar</b-btn>
-              </div>
+              </b-form-group>
             </b-col>
           </b-row>
         </form>
