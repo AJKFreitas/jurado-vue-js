@@ -20,7 +20,7 @@
               <b-form-group label="Nota Final">
                 <b-form-input v-model="model.notaTotal" type="text"></b-form-input>
               </b-form-group>
-              </b-col>
+            </b-col>
               <b-col>
               <b-form-group label="&nbsp;">
                 <b-btn type="submit" variant="success">Salvar</b-btn>

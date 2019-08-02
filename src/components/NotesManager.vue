@@ -2,29 +2,38 @@
   <div class="container-fluid mt-4">
   <h1>Notas</h1>
   <div>
-    
-
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Submit Your Name"
+      title="Avaliar Musica"
       @show="resetModal"
       @hidden="resetModal"
-      @ok="handleOk">
+      @ok="handleOk"
+      >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          :state="nameState"
-          label="Name"
-          label-for="name-input"
-          invalid-feedback="Name is required"
-        >
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-          <b-form-input id="name-input" v-model="name" :state="nameState" required></b-form-input>
-        </b-form-group>
+        <table class="table table-striped" :title="(model.id ? 'Editar Música ID#' + model.id : 'Nova Música')">
+            <thead>
+              <tr>
+                <th>Melodia</th>
+                <th>Letra</th>
+                <th>Armonia</th>
+                <th>Ritimo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b-form-input id="Melodia-input" type="number" v-model.number="melodia" :state="nameState" required></b-form-input></td>
+                <td><b-form-input id="Letra-input" type="number" v-model.number="letra" :state="nameState" required></b-form-input></td>
+                <td><b-form-input id="Armonia-input" type="number" v-model.number="armonia" :state="nameState" required></b-form-input></td>
+                <td><b-form-input id="Ritimo-input" type="number" v-model.number="ritimo" :state="nameState" required></b-form-input></td>
+              </tr>
+            </tbody>
+          </table>
+           <b-col>
+              <b-form-group label="Nota Final">
+                <b-form-input v-model.number="model.notaTotal" type="text" desabled></b-form-input>
+              </b-form-group>
+            </b-col>
       </form>
     </b-modal>
   </div>
@@ -45,8 +54,6 @@
                 <td>{{ music.notaTotal }}</td>
                 <td class="text-right">
                   <b-button v-b-modal.modal-prevent-closing @click.prevent="populateMusicToEdit(music)">Pontuar</b-button>
-                  <!-- <b-button variant="warning" @click.prevent="populateMusicToEdit(music)">Editar</b-button>
-                  <b-button variant="danger" @click.prevent="deleteMusic(music.id)">Deletar</b-button> -->
                 </td>
               </tr>
             </tbody>
@@ -60,6 +67,10 @@ import api from '@/api'
 export default {
   data () {
     return {
+      melodia: 0,
+      letra: 0,
+      armonia: 0,
+      ritimo: 0,
       loading: false,
       nota: [],
       musics: [],
@@ -73,6 +84,9 @@ export default {
     this.refreshMusics()
   },
   methods: {
+    calcFinalNote () {
+      this.model.notaTotal = this.melodia + this.letra + this.armonia + this.ritimo + this.model.notaTotal
+    },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()
       this.nameState = valid ? 'valid' : 'invalid'
@@ -93,6 +107,7 @@ export default {
       if (!this.checkFormValidity()) {
         return
       }
+      this.calcFinalNote()
       this.saveMusic()
       this.$nextTick(() => {
         this.$refs.modal.hide()

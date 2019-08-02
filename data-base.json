@@ -20,7 +20,7 @@
     {
       "nome": "As andorinhas voltaram",
       "autor": "Trio parada dura",
-      "notaTotal": "11",
+      "notaTotal": 22,
       "id": 1
     },
     {
@@ -28,6 +28,12 @@
       "autor": "Thiago",
       "notaTotal": "3",
       "id": 2
+    },
+    {
+      "nome": "musica do vander",
+      "autor": "wader",
+      "notaTotal": 13,
+      "id": 3
     }
   ]
 }
