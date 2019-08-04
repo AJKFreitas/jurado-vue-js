@@ -5,27 +5,26 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      title="Avaliar Musica"
+      :title="(model.id ? 'Avaliar Musica: ' + model.nome : 'Nova Música')"
       @show="resetModal"
       @hidden="resetModal"
-      @ok="handleOk"
-      >
+      @ok="handleOk">
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <table class="table table-striped" :title="(model.id ? 'Editar Música ID#' + model.id : 'Nova Música')">
+        <table class="table table-striped" :title="(model.id ? 'Editar Música' + model.nome : 'Nova Música')">
             <thead>
               <tr>
                 <th>Melodia</th>
                 <th>Letra</th>
-                <th>Armonia</th>
-                <th>Ritimo</th>
+                <th>Enredo</th>
+                <th>Execução</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><b-form-input id="Melodia-input" type="number" v-model.number="melodia" :state="nameState" required></b-form-input></td>
                 <td><b-form-input id="Letra-input" type="number" v-model.number="letra" :state="nameState" required></b-form-input></td>
-                <td><b-form-input id="Armonia-input" type="number" v-model.number="armonia" :state="nameState" required></b-form-input></td>
-                <td><b-form-input id="Ritimo-input" type="number" v-model.number="ritimo" :state="nameState" required></b-form-input></td>
+                <td><b-form-input id="Enredo-input" type="number" v-model.number="enredo" :state="nameState" required></b-form-input></td>
+                <td><b-form-input id="Execucaoo-input" type="number" v-model.number="execucao" :state="nameState" required></b-form-input></td>
               </tr>
             </tbody>
           </table>
@@ -69,8 +68,8 @@ export default {
     return {
       melodia: 0,
       letra: 0,
-      armonia: 0,
-      ritimo: 0,
+      enredo: 0,
+      execucao: 0,
       loading: false,
       nota: [],
       musics: [],
@@ -85,7 +84,7 @@ export default {
   },
   methods: {
     calcFinalNote () {
-      this.model.notaTotal = this.melodia + this.letra + this.armonia + this.ritimo + this.model.notaTotal
+      this.model.notaTotal = this.melodia + this.letra + this.enredo + this.execucao + this.model.notaTotal
     },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()

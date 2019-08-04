@@ -1,38 +1,31 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "nome": "João Pequeno",
+      "grupo": "Aruanda",
+      "graduacao": "Mestre",
+      "id": 2
     }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
+  "comments": [],
   "profile": {
     "name": "typicode"
   },
   "musics": [
     {
-      "nome": "As andorinhas voltaram",
-      "autor": "Trio parada dura",
-      "notaTotal": 22,
-      "id": 1
+      "nome": "Acende o candeiro iaia",
+      "autor": "João Da Lapa",
+      "grupo": "Capoeira Raiz",
+      "toque": "São Bento Pequeno",
+      "id": 2,
+      "notaTotal": 8
     },
     {
-      "nome": "As Andorinhas voltaram 2",
-      "autor": "Thiago",
-      "notaTotal": "3",
-      "id": 2
-    },
-    {
-      "nome": "musica do vander",
-      "autor": "wader",
-      "notaTotal": 13,
+      "nome": "Punp up kicks",
+      "autor": " Foster The People",
+      "grupo": "Pumped up Kicks - Foster The People",
+      "notaTotal": 4,
+      "toque": "Benguela",
       "id": 3
     }
   ]

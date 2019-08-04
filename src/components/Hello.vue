@@ -1,8 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    
-    
+<div>
+  <b-img src="../assets/fundo.jpeg" center  alt="Festival"></b-img>
+</div>
+
   </div>
 </template>
 
@@ -11,7 +13,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Placar Jure 2019'
+      msg: 'Festival de Cantigas 2019'
     }
   }
 }

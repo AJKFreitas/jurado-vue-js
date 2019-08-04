@@ -51,5 +51,21 @@ export default {
   },
   deleteMusic (id) {
     return this.execute('delete', `/musics/${id}`)
+  },
+
+  getJures () {
+    return this.execute('get', '/jure')
+  },
+  getJure (id) {
+    return this.execute('get', `/jure/${id}`)
+  },
+  createJure (data) {
+    return this.execute('post', '/jure', data)
+  },
+  updateJure (id, data) {
+    return this.execute('put', `/jure/${id}`, data)
+  },
+  deleteJure (id) {
+    return this.execute('delete', `/jure/${id}`)
   }
 }
