@@ -19,8 +19,8 @@
               <td>{{ post.grupo }}</td>
               <td>{{ post.graduacao }}</td>
               <td class="text-right">
-                <a href="#" @click.prevent="populatePostToEdit(post)">Edit</a> -
-                <a href="#" @click.prevent="deletePost(post.id)">Delete</a>
+                <b-button variant="warning" @click.prevent="populatePostToEdit(post)">Edit</b-button> -
+                <b-button variant="danger"  @click.prevent="deletePost(post.id)">Delete</b-button>
               </td>
             </tr>
           </tbody>

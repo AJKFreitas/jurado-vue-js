@@ -1,19 +1,59 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-<div>
-  <b-img src="../assets/fundo.jpeg" center  alt="Festival"></b-img>
-</div>
-
+<div class="container-fluid">
+  <b-container>
+    <div class="hello">
+      <h1>{{ msg }}</h1>
+    </div>
+    <b-table striped hover small :items="musics" :fields="fields"></b-table>
+    <!-- <b-img src="../assets/fundo.jpeg" center  alt="Festival"></b-img> -->
+  </b-container>
   </div>
 </template>
 
 <script>
+import api from '@/api'
 export default {
-  name: 'hello',
   data () {
     return {
-      msg: 'Festival de Cantigas 2019'
+      msg: 'Festival de Cantigas 2019',
+      loading: false,
+      musics: [],
+      model: {},
+      fields: {
+        nome: {
+          label: 'Nome',
+          sortable: true
+        },
+        autor: {
+          label: 'Autor',
+          sortable: true
+        },
+        grupo: {
+          label: 'Grupo',
+          sortable: true
+        },
+        toque: {
+          label: 'Toque',
+          sortable: true
+        },
+        notaTotal: {
+          label: 'Nota Final',
+          sortable: true
+        }
+      }
+    }
+  },
+  async created () {
+    this.refreshMusics()
+  },
+  methods: {
+    async refreshMusics () {
+      this.loading = true
+      this.musics = await api.getMusics()
+      this.loading = false
+    },
+    async populateMusicToEdit (music) {
+      this.model = Object.assign({}, music)
     }
   }
 }
@@ -37,5 +77,12 @@ li {
 
 a {
   color: #35495E;
+}
+div.container-fluid{
+  height: 785px;
+  background-image:linear-gradient( rgba(255,255,255,.8) 0%,rgba(255,255,255,.8) 100%), url("../assets/fundo.jpeg"); 
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+ 
 }
 </style>

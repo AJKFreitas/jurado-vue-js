@@ -5,7 +5,8 @@
     <b-modal
       id="modal-prevent-closing"
       ref="modal"
-      :title="(model.id ? 'Avaliar Musica: ' + model.nome : 'Nova Música')"
+      size="lg"
+      :title="(model.id ? 'Avaliar Música: ' + model.nome : 'Nova Música')"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk">
@@ -13,6 +14,7 @@
         <table class="table table-striped" :title="(model.id ? 'Editar Música' + model.nome : 'Nova Música')">
             <thead>
               <tr>
+                <th>Jure</th>
                 <th>Melodia</th>
                 <th>Letra</th>
                 <th>Enredo</th>
@@ -20,19 +22,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><b-form-input id="Melodia-input" type="number" v-model.number="melodia" :state="nameState" required></b-form-input></td>
-                <td><b-form-input id="Letra-input" type="number" v-model.number="letra" :state="nameState" required></b-form-input></td>
-                <td><b-form-input id="Enredo-input" type="number" v-model.number="enredo" :state="nameState" required></b-form-input></td>
-                <td><b-form-input id="Execucaoo-input" type="number" v-model.number="execucao" :state="nameState" required></b-form-input></td>
+              <tr v-for="(jure, index) in jurados" :key="jure.id">
+                  <td>{{ jure.nome }}</td>
+                <td><b-form-input id="Melodia-input" type="number" v-model.number="melodia[index]" :state="nameState" ></b-form-input></td>
+                <td><b-form-input id="Letra-input" type="number" v-model.number="letra[index]" :state="nameState" ></b-form-input></td>
+                <td><b-form-input id="Enredo-input" type="number" v-model.number="enredo[index]" :state="nameState" ></b-form-input></td>
+                <td><b-form-input id="Execucaoo-input" type="number" v-model.number="execucao[index]" :state="nameState" ></b-form-input></td>
               </tr>
             </tbody>
           </table>
-           <b-col>
-              <b-form-group label="Nota Final">
-                <b-form-input v-model.number="model.notaTotal" type="text" desabled></b-form-input>
-              </b-form-group>
-            </b-col>
+           <b-col class="md">
+              <b-input-group prepend="Nota Final" class="mt-3">
+                <b-form-input v-model.number="model.notaTotal" type="text" readonly required></b-form-input>
+                <b-input-group-append>
+                  <b-button variant="outline-success" v-b-modal.modal-prevent-closing @click.prevent="calcFinalNote()">Calcular</b-button>
+                </b-input-group-append>
+              </b-input-group>
+          </b-col>
       </form>
     </b-modal>
   </div>
@@ -52,7 +58,7 @@
                 <td>{{ music.autor }}</td>
                 <td>{{ music.notaTotal }}</td>
                 <td class="text-right">
-                  <b-button v-b-modal.modal-prevent-closing @click.prevent="populateMusicToEdit(music)">Pontuar</b-button>
+                  <b-button variant="primary" v-b-modal.modal-prevent-closing @click.prevent="populateMusicToEdit(music)">Pontuar</b-button>
                 </td>
               </tr>
             </tbody>
@@ -66,13 +72,14 @@ import api from '@/api'
 export default {
   data () {
     return {
-      melodia: 0,
-      letra: 0,
-      enredo: 0,
-      execucao: 0,
+      melodia: [],
+      letra: [],
+      enredo: [],
+      execucao: [],
       loading: false,
       nota: [],
       musics: [],
+      jurados: [],
       model: {},
       name: '',
       nameState: null,
@@ -84,7 +91,8 @@ export default {
   },
   methods: {
     calcFinalNote () {
-      this.model.notaTotal = this.melodia + this.letra + this.enredo + this.execucao + this.model.notaTotal
+      this.model.notaTotal = this.melodia.reduce((a, b) => a + b) + this.letra.reduce((a, b) => a + b) + this.enredo.reduce((a, b) => a + b) + this.execucao.reduce((a, b) => a + b)
+      this.resetModal()
     },
     checkFormValidity () {
       const valid = this.$refs.form.checkValidity()
@@ -94,6 +102,10 @@ export default {
     resetModal () {
       this.name = ''
       this.nameState = null
+      this.enredo = []
+      this.melodia = []
+      this.letra = []
+      this.execucao = []
     },
     handleOk (bvModalEvt) {
       // Prevent modal from closing
@@ -106,7 +118,6 @@ export default {
       if (!this.checkFormValidity()) {
         return
       }
-      this.calcFinalNote()
       this.saveMusic()
       this.$nextTick(() => {
         this.$refs.modal.hide()
@@ -115,6 +126,7 @@ export default {
     async refreshMusics () {
       this.loading = true
       this.musics = await api.getMusics()
+      this.jurados = await api.getPosts()
       this.loading = false
     },
     async populateMusicToEdit (music) {
