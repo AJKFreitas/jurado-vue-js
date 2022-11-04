@@ -21,7 +21,7 @@
     "bootstrap-vue": "^2.0.0-rc.7",
     "cors": "^2.8.5",
     "epilogue": "^0.7.1",
-    "json-server": "^0.15.0",
+    "json-server": "^0.17.1",
     "node": "^12.7.0",
     "sequelize": "^5.12.2",
     "sqlite3": "^4.0.9",
