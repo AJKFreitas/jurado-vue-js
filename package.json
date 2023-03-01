@@ -23,7 +23,7 @@
     "epilogue": "^0.7.1",
     "json-server": "^0.15.0",
     "node": "^12.7.0",
-    "sequelize": "^5.12.2",
+    "sequelize": "^6.28.1",
     "sqlite3": "^4.0.9",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
